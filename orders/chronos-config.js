@@ -1,4 +1,5 @@
 const chronos = require('chronos-tracker');
+process.env.MONGO_URI = "mongodb+srv://chronos:chronos@cluster0.tpeie.mongodb.net/chronos?retryWrites=true&w=majority"
 
 chronos.use({
   microservice: 'orders',

@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/patpat20/Chronos/issues"
   },
-  "homepage": "https://github.com/patpat20/Chronos#readme"
+  "homepage": "https://github.com/patpat20/Chronos#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
