@@ -11,7 +11,11 @@
       "@babel/preset-react"
     ]
   },
-  "keywords": ["microservices", "docker", "docker-compose"],
+  "keywords": [
+    "microservices",
+    "docker",
+    "docker-compose"
+  ],
   "author": "Chronos Team",
   "license": "ISC",
   "dependencies": {
