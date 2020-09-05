@@ -5,15 +5,16 @@ require('dotenv').config();
 const { Schema } = mongoose;
 
 // DB link for books data.
-const book_db_URI = `${process.env.BOOKS_DB}`;
+// const book_db_URI = `${process.env.BOOKS_DB}`;
+const book_db_URI = `mongodb+srv://gpk:gpk@cluster0.vej9l.mongodb.net/docker?retryWrites=true&w=majority`;
 
 // const URI = process.env.MONGO_URI || myURI;
 
 // connect the database, if error, log will be sent to the terminal
-mongoose.connect(book_db_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose
+  .connect(book_db_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected!!!********* Books Database is live!!!'))
   .catch((err) => console.log('Connection Error ', err));
-
 
 //  Schema for the database
 const BooksSchema = new Schema({

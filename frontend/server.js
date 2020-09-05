@@ -1,7 +1,9 @@
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const cmd = require('chronos-microservice-debugger4');
+const cmd = require('chronos-tracker');
+require('./chronos-config');
+
 require('dotenv').config();
 
 cmd.propagate();
@@ -18,27 +20,32 @@ app.get('/', (req, res) => {
 // const httpProxy = require('http-proxy');
 // const apiProxy = httpProxy.createProxyServer();
 
-const books = `http://localhost:${process.env.BOOKS_PORT}`;
-const customers = `http://localhost:${process.env.CUSTOMERS_PORT}`;
-const orders = `http://localhost:${process.env.ORDERS_PORT}`;
+// const books = `http://localhost:${process.env.BOOKS_PORT}`;
+// const customers = `http://localhost:${process.env.CUSTOMERS_PORT}`;
+// const orders = `http://localhost:${process.env.ORDERS_PORT}`;
+const books = `http://localhost:8888`;
+const customers = `http://localhost:5555`;
+const orders = `http://localhost:7777`;
 
 // eslint-disable-next-line max-len
 // Invoke .microCom with the 6 params to enable logging of comm and health data to your own db.
 // Params (6): microservice name, db type, db URI, want health data?, query freq, is service Dockerized?
-  // If running a svc in a Docker container, please give container the same name as the microservice...
-  // ... to ensure proper logging of container stats.
-app.use('/', cmd.microCom(
-  'frontend',
-  // PostgreSQL
-  'sql',
-  `${process.env.CHRONOS_PSQL}`,
-  // MongoDB
-  // 'mongo',
-  // `${process.env.CHRONOS_MONGO}`,
-  'no',
-  'm',
-  'yes' // <-- Is the service Dockerized?
-));
+// If running a svc in a Docker container, please give container the same name as the microservice...
+// ... to ensure proper logging of container stats.
+// app.use('/', cmd.microCom(
+//   'frontend',
+//   // PostgreSQL
+//   'sql',
+//   `${process.env.CHRONOS_PSQL}`,
+//   // MongoDB
+//   // 'mongo',
+//   // `${process.env.CHRONOS_MONGO}`,
+//   'no',
+//   'm',
+//   'yes' // <-- Is the service Dockerized?
+// ));
+
+app.use('/', cmd.track());
 
 app.use(cors());
 
@@ -51,7 +58,7 @@ app.use((req, res, next) => {
     PATH: ${req.url},
     BODY: ${JSON.stringify(req.body)},
     ID: ${req.query.id}
-    ***************************************************************************************`,
+    ***************************************************************************************`
   );
   next();
 });
@@ -88,6 +95,7 @@ app.use((error, req, res, next) => {
 });
 
 // Open and listen to server on specified port
-app.listen(process.env.FRONTEND_PORT, () => {
-  console.log(`Frontend server running on port ${process.env.FRONTEND_PORT} ...`);
+app.listen(3000, () => {
+  // console.log(`Frontend server running on port ${process.env.FRONTEND_PORT} ...`);
+  console.log('Frontend server running on port 3000 ...');
 });

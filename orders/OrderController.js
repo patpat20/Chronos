@@ -51,7 +51,8 @@ OrderController.deleteorder = (req, res, next) => {
 
 //  Controller for retrieving customers info from the customer application
 OrderController.fetchcustomerdata = (req, res, next) => {
-  fetch(`http://customers:${process.env.CUSTOMERS_PORT}/customers/getcustomers`, {
+  // fetch(`http://customers:${process.env.CUSTOMERS_PORT}/customers/getcustomers`, {
+  fetch(`http://customers:5555/customers/getcustomers`, {
     method: 'GET',
     headers: {
       'Content-Type': 'Application/JSON',

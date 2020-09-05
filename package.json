@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "A set of basic microservices to test Chronos' features.",
   "scripts": {
-    "nodemon": "nodemon server/server.js"
+    "dev": "(cd books && npm start) & (cd customers && npm start) & (cd orders && npm start) & (cd frontend && npm start)"
   },
   "babel": {
     "presets": [
