@@ -1,26 +1,29 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
 const BookModel = require('./BookModel');
- 
 
 const BookController = {};
 
 // This controller creates a book in the book db
 BookController.createBook = (req, res, next) => {
-  const {
-    title, author, numberOfPages, publisher,
-  } = req.body;
-  BookModel.create({
-    title, author, numberOfPages, publisher,
-  }, (err, result) => {
-    if (err) {
-      console.log(`This is the error I am getting back ${err}`);
-      return res.send(404).json(err);
-    }
+  const { title, author, numberOfPages, publisher } = req.body;
+  BookModel.create(
+    {
+      title,
+      author,
+      numberOfPages,
+      publisher,
+    },
+    (err, result) => {
+      if (err) {
+        console.log(`This is the error I am getting back ${err}`);
+        return res.send(404).json(err);
+      }
 
-    res.locals.createBook = result;
-    return next();
-  });
+      res.locals.createBook = result;
+      return next();
+    }
+  );
 };
 
 // This controller creates a book in the book db
@@ -36,7 +39,6 @@ BookController.getBooks = (req, res, next) => {
     return next();
   });
 };
-
 
 // This controller deletes books
 BookController.deleteBook = (req, res, next) => {
@@ -57,7 +59,8 @@ BookController.getorderinfo = (req, res, next) => {
   //  const { body } = req;
   // since it's a get request, you technically don't need
   //  all the headers but it's more declarative this way
-  fetch(`http://orders:${process.env.ORDERS_PORT}/orders/getorders`, {
+  // fetch(`http://orders:${process.env.ORDERS_PORT}/orders/getorders`, {
+  fetch(`http://orders:7777/orders/getorders`, {
     method: 'GET',
     headers: {
       'Content-Type': 'Application/JSON',

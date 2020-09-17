@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const cmd = require('chronos-microservice-debugger4');
+const cmd = require('chronos-tracker');
+require('./chronos-config');
 const controller = require('./CustomerController');
 require('dotenv').config();
 
@@ -14,20 +15,22 @@ app.use(express.json());
 
 // Invoke .microCom with the 6 params to enable logging of comm and health data to your own db.
 // Params (6): microservice name, db type, db URI, want health data?, query freq, is service Dockerized?
-  // If running a svc in a Docker container, please give container the same name as the microservice...
-  // ... to ensure proper logging of container stats.
-app.use('/', cmd.microCom(
-  'customers',
-  // PostgreSQL
-  'sql',
-  `${process.env.CHRONOS_PSQL}`,
-  // MongoDB
-  // 'mongo',
-  // `${process.env.CHRONOS_MONGO}`,
-  'no',
-  'm',
-  'yes' // <-- Is the service Dockerized?
-));
+// If running a svc in a Docker container, please give container the same name as the microservice...
+// ... to ensure proper logging of container stats.
+// app.use('/', cmd.microCom(
+//   'customers',
+//   // PostgreSQL
+//   'sql',
+//   `${process.env.CHRONOS_PSQL}`,
+//   // MongoDB
+//   // 'mongo',
+//   // `${process.env.CHRONOS_MONGO}`,
+//   'no',
+//   'm',
+//   'yes' // <-- Is the service Dockerized?
+// ));
+
+app.use('/', cmd.track());
 
 app.use(cors());
 app.use('/', express.static(path.resolve(__dirname, '../frontend')));
@@ -57,9 +60,13 @@ app.get('/customers/getcustomers', controller.getcustomers, (req, res) => {
 });
 
 //  Delete a customer with id
-app.delete('/customers/deletecustomer:id?', controller.deletecustomer, (req, res) => {
-  res.status(200).json(res.locals.deletecustomer);
-});
+app.delete(
+  '/customers/deletecustomer:id?',
+  controller.deletecustomer,
+  (req, res) => {
+    res.status(200).json(res.locals.deletecustomer);
+  }
+);
 
 // Get books information from the books application
 app.get('/customers/getbooksinfo', controller.getbooksinfo, (req, res) => {
@@ -80,6 +87,12 @@ app.use((error, req, res, next) => {
   res.status(errorObj.status).json(errorObj.message);
 });
 
-app.listen(process.env.CUSTOMERS_PORT, () => {
-  console.log(`Customer server running on port ${process.env.CUSTOMERS_PORT}...`);
+// app.listen(process.env.CUSTOMERS_PORT, () => {
+//   console.log(
+//     `Customer server running on port ${process.env.CUSTOMERS_PORT}...`
+//   );
+// });
+
+app.listen(5555, () => {
+  console.log(`Customer server running on port 5555...`);
 });

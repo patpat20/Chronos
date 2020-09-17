@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const cmd = require('chronos-microservice-debugger4');
+const cmd = require('chronos-tracker');
+require('./chronos-config');
 const controller = require('./OrderController');
 require('dotenv').config();
 
@@ -12,20 +13,22 @@ const app = express();
 
 // Invoke .microCom with the 6 params to enable logging of comm and health data to your own db.
 // Params (6): microservice name, db type, db URI, want health data?, query freq, is service Dockerized?
-  // If running a svc in a Docker container, please give container the same name as the microservice...
-  // ... to ensure proper logging of container stats.
-app.use('/', cmd.microCom(
-  'orders',
-  // PostgreSQL
-  'sql',
-  `${process.env.CHRONOS_PSQL}`,
-  // MongoDB
-  // 'mongo',
-  // `${process.env.CHRONOS_MONGO}`,
-  'no',
-  'm',
-  'yes' // <-- Is the service Dockerized?
-));
+// If running a svc in a Docker container, please give container the same name as the microservice...
+// ... to ensure proper logging of container stats.
+// app.use('/', cmd.microCom(
+//   'orders',
+//   // PostgreSQL
+//   'sql',
+//   `${process.env.CHRONOS_PSQL}`,
+//   // MongoDB
+//   // 'mongo',
+//   // `${process.env.CHRONOS_MONGO}`,
+//   'no',
+//   'm',
+//   'yes' // <-- Is the service Dockerized?
+// ));
+
+app.use('/', cmd.track());
 
 app.use(cors());
 app.use('/', express.static(path.resolve(__dirname, '../frontend')));
@@ -49,7 +52,9 @@ app.post('/orders/createorder', controller.createorder, (req, res) => {
 });
 
 // Get all orders through this endpoint
-app.get('/orders/getorders', controller.getorders, (req, res) => res.status(200).json(res.locals.getorders));
+app.get('/orders/getorders', controller.getorders, (req, res) =>
+  res.status(200).json(res.locals.getorders)
+);
 
 // Delete order through this endpoint
 app.delete('/orders/deleteorder:id?', controller.deleteorder, (req, res) => {
@@ -57,9 +62,13 @@ app.delete('/orders/deleteorder:id?', controller.deleteorder, (req, res) => {
 });
 
 // Get customer info from the customers application with this endpoint
-app.get('/orders/getcustomersinfo', controller.fetchcustomerdata, (req, res) => {
-  res.status(200).json((res.locals.customerdata));
-});
+app.get(
+  '/orders/getcustomersinfo',
+  controller.fetchcustomerdata,
+  (req, res) => {
+    res.status(200).json(res.locals.customerdata);
+  }
+);
 
 // Global error handler
 app.use((error, req, res, next) => {
@@ -76,6 +85,10 @@ app.use((error, req, res, next) => {
 });
 
 //  open and listen to server on this port
-app.listen(process.env.ORDERS_PORT, () => {
-  console.log(`Orders server running on port ${process.env.ORDERS_PORT}...`);
+// app.listen(process.env.ORDERS_PORT, () => {
+//   console.log(`Orders server running on port ${process.env.ORDERS_PORT}...`);
+// });
+
+app.listen(7777, () => {
+  console.log(`Orders server running on port 7777...`);
 });

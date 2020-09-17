@@ -45,7 +45,8 @@ CustomerController.deletecustomer = (req, res, next) => {
 //  Controller to get info from the books application
 CustomerController.getbooksinfo = (req, res, next) => {
   //  const { body } = req;
-  fetch(`http://books:${process.env.BOOKS_PORT}/books/getbooks`, {
+  // fetch(`http://books:${process.env.BOOKS_PORT}/books/getbooks`, {
+  fetch(`http://books:8888/books/getbooks`, {
     method: 'GET',
     headers: {
       'Content-Type': 'Application/JSON',
